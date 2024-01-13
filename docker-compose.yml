@@ -1,0 +1,51 @@
+version: '3.1'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: fatura-yonetim-sistemi-postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fatura-yonetim-sistemi-networks
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - social-media-networks
+  app:
+    image: 'fatura-yonetim-sistemi-api:latest'
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fatura-yonetim-sistemi-api
+    restart: unless-stopped
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+    networks:
+      - fatura-yonetim-sistemi-networks
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  fatura-yonetim-sistemi-networks:
+    driver: bridge
