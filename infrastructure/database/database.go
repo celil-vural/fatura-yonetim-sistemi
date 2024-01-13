@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fatura-yonetim-sistemi/entity/models"
 	"fatura-yonetim-sistemi/infrastructure/config"
 	"fmt"
 	"gorm.io/driver/postgres"
@@ -37,7 +38,17 @@ func ConnectDb() {
 	log.Println("Connected")
 	db.Logger = logger.Default.LogMode(logger.Info)
 	log.Println("running migrations")
-	err = db.AutoMigrate()
+	err = db.AutoMigrate(
+		&models.User{},
+		&models.Manager{},
+		&models.Apartment{},
+		&models.Message{},
+		&models.Invoice{},
+		models.InvoiceType{},
+		&models.InvoicePayment{},
+		&models.Dues{},
+		&models.DuesPayment{},
+	)
 	if err != nil {
 		log.Fatal("Failed to migrate. \n", err)
 		os.Exit(2)
