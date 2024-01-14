@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fatura-yonetim-sistemi/handler"
 	"fatura-yonetim-sistemi/infrastructure/database"
 	"fatura-yonetim-sistemi/router"
 	"github.com/gofiber/fiber/v2"
@@ -11,7 +12,9 @@ import (
 
 func main() {
 	database.ConnectDb()
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: handler.ErrorHandler,
+	})
 	app.Use(logger.New())
 	app.Use(cors.New())
 	router.SetupRoutes(app)

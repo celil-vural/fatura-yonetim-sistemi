@@ -11,7 +11,7 @@ type User struct {
 	Name           string    `json:"name" gorm:"type:varchar(50);not null"`
 	Surname        string    `json:"surname" gorm:"type:varchar(50);not null"`
 	Phone          string    `json:"phone" gorm:"type:varchar(50);unique;not null"`
-	IdentityNumber string    `json:"identityNumber" gorm:"type:varchar(11);unique;not null;check:length(11)"`
+	IdentityNumber string    `json:"identity_number" gorm:"type:varchar(11);unique;not null;check:length(11)"`
 	Email          string    `json:"email" gorm:"type:varchar(50);unique;not null;"`
 	Password       string    `json:"password" gorm:"not null"`
 	SessionActive  bool      `json:"session_active" gorm:"default:false"`
