@@ -14,7 +14,29 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 				Data:    nil,
 				Success: false,
 				ErrorDetail: entity.ErrorResponse{
-					Message: e.Message,
+					Message: e.ErrorType.Message,
+					Error:   e,
+				},
+			},
+		)
+	case errors.UserNotFoundError:
+		return c.Status(e.Code).JSON(
+			entity.GlobalResponse{
+				Data:    nil,
+				Success: false,
+				ErrorDetail: entity.ErrorResponse{
+					Message: e.ErrorType.Message,
+					Error:   e,
+				},
+			},
+		)
+	case errors.UserIsNotActiveError:
+		return c.Status(e.Code).JSON(
+			entity.GlobalResponse{
+				Data:    nil,
+				Success: false,
+				ErrorDetail: entity.ErrorResponse{
+					Message: e.ErrorType.Message,
 					Error:   e,
 				},
 			},

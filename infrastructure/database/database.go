@@ -20,7 +20,7 @@ var Database Dbinstance
 
 // ConnectDb function to connect to database
 func ConnectDb() {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+	dsn := fmt.Sprintf("host=%s userDtos=%s password=%s dbname=%s port=%s sslmode=disable",
 		config.ConfigEnv("DB_HOST"),
 		config.ConfigEnv("DB_USER"),
 		config.ConfigEnv("DB_PASSWORD"),
@@ -40,7 +40,6 @@ func ConnectDb() {
 	log.Println("running migrations")
 	err = db.AutoMigrate(
 		&models.User{},
-		&models.Manager{},
 		&models.Apartment{},
 		&models.Message{},
 		&models.Invoice{},

@@ -18,15 +18,11 @@ type User struct {
 	CreatedAt      time.Time `json:"created_at" gorm:"autoCreateTime;not null"`
 	UpdatedAt      time.Time `json:"updated_at" gorm:"autoUpdateTime;not null"`
 	DeletedAt      time.Time `json:"deleted_at" gorm:"default:null"`
+	IsManager      bool      `json:"is_manager" gorm:"default:false"`
 	// Relations
 	OwnedApartments  []Apartment `json:"ownedApartments" gorm:"foreignKey:OwnerID;references:ID"`
 	RentedApartments []Apartment `json:"rentedApartments" gorm:"foreignKey:HirerID;references:ID"`
 	SentMessages     []Message   `json:"sentMessages" gorm:"foreignKey:UserID;references:ID"`
-}
-type Manager struct {
-	gorm.Model
-	UserID string `json:"user_id" gorm:"type:varchar(50);primaryKey"`
-	User   *User  `json:"user" gorm:"foreignKey:UserID;references:ID"`
 }
 
 func (user *User) BeforeCreate(tx *gorm.DB) (err error) {

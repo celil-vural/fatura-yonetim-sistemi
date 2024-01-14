@@ -8,5 +8,5 @@ type Message struct {
 	Seen    bool   `json:"seen" gorm:"type:bit;not null;default:false"`
 	// Relations
 	UserID string `json:"userId" gorm:"type:varchar(50);not null"`
-	User   *User  `json:"user" gorm:"foreignKey:UserID;references:ID"`
+	User   *User  `json:"userDtos" gorm:"foreignKey:UserID;references:ID"`
 }
