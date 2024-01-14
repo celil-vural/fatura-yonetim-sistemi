@@ -53,3 +53,54 @@ func Register(c *fiber.Ctx) error {
 		},
 	)
 }
+func GetUsers(c *fiber.Ctx) error {
+	var userService = service.UserService{Repo: repository.UserRepository{DB: database.Database.Db}}
+	users, err := userService.GetUsers()
+	if err != nil {
+		return err
+	}
+	return c.Status(200).JSON(
+		entity.GlobalResponse{
+			Data:        users,
+			Success:     true,
+			ErrorDetail: entity.ErrorResponse{},
+		},
+	)
+}
+func UpdateUser(c *fiber.Ctx) error {
+	var userService = service.UserService{Repo: repository.UserRepository{DB: database.Database.Db}}
+	var dto userDtos.UserDtoUpdateForManager
+	if err := c.BodyParser(&dto); err != nil {
+		return err
+	}
+	err := userService.UpdateUser(&dto)
+	if err != nil {
+		return err
+	}
+	return c.Status(200).JSON(
+		entity.GlobalResponse{
+			Data: map[string]string{
+				"message": "User updated successfully",
+			},
+			Success:     true,
+			ErrorDetail: entity.ErrorResponse{},
+		},
+	)
+}
+func DeleteUser(c *fiber.Ctx) error {
+	var userService = service.UserService{Repo: repository.UserRepository{DB: database.Database.Db}}
+	id := c.FormValue("id")
+	err := userService.DeleteUser(id)
+	if err != nil {
+		return err
+	}
+	return c.Status(200).JSON(
+		entity.GlobalResponse{
+			Data: map[string]string{
+				"message": "User deleted successfully",
+			},
+			Success:     true,
+			ErrorDetail: entity.ErrorResponse{},
+		},
+	)
+}

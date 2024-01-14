@@ -30,13 +30,22 @@ type UserDtoForManager struct {
 	IdentityNumber   string                                    `json:"identity_number"`
 	Email            string                                    `json:"email"`
 	Password         string                                    `json:"password"`
-	SessionActive    bool                                      `json:"session_active"`
 	CreatedAt        time.Time                                 `json:"created_at"`
 	UpdatedAt        time.Time                                 `json:"updated_at"`
 	DeletedAt        gorm.DeletedAt                            `json:"deleted_at"`
 	IsManager        bool                                      `json:"is_manager"`
 	OwnedApartments  []apartmentDtos.ApartmentDtoForManagerGet `json:"ownedApartments"`
 	RentedApartments []apartmentDtos.ApartmentDtoForManagerGet `json:"rentedApartments"`
+}
+type UserDtoUpdateForManager struct {
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Surname        string `json:"surname"`
+	Phone          string `json:"phone"`
+	IdentityNumber string `json:"identity_number"`
+	Email          string `json:"email"`
+	Password       string `json:"password"`
+	IsManager      bool   `json:"is_manager"`
 }
 
 func (d UserDtoForManager) FromUser(user *models.User) {
@@ -47,7 +56,6 @@ func (d UserDtoForManager) FromUser(user *models.User) {
 	d.IdentityNumber = user.IdentityNumber
 	d.Email = user.Email
 	d.Password = user.Password
-	d.SessionActive = user.SessionActive
 	d.CreatedAt = user.CreatedAt
 	d.UpdatedAt = user.UpdatedAt
 	d.DeletedAt = user.DeletedAt
@@ -62,6 +70,18 @@ func (d UserDtoForManager) FromUser(user *models.User) {
 		apartmentDto.FromApartment(&apartment)
 		d.RentedApartments = append(d.RentedApartments, apartmentDto)
 	}
+}
+func (d UserDtoUpdateForManager) ToUser() *models.User {
+	var user models.User
+	user.ID = d.ID
+	user.Name = d.Name
+	user.Surname = d.Surname
+	user.Phone = d.Phone
+	user.IdentityNumber = d.IdentityNumber
+	user.Email = d.Email
+	user.Password = d.Password
+	user.IsManager = d.IsManager
+	return &user
 }
 func (d UserDtoForSessionControl) FromUser(user *models.User) {
 	d.SessionActive = user.SessionActive

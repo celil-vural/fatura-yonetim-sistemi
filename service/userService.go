@@ -39,13 +39,21 @@ func (service *UserService) Register(dto *userDtos.RegisterDto) error {
 	return nil
 }
 func (service *UserService) Logout(id string) error {
-	err := service.Repo.SetSessionInactive(id)
+	err := service.UserExists(id)
+	if err != nil {
+		return err
+	}
+	err = service.Repo.SetSessionInactive(id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 func (service *UserService) FindUserForSessionControl(id string) (*userDtos.UserDtoForSessionControl, error) {
+	err := service.UserExists(id)
+	if err != nil {
+		return nil, err
+	}
 	user, err := service.Repo.FindUserForSessionControl(id)
 	var dto userDtos.UserDtoForSessionControl
 	dto.FromUser(user)
@@ -76,4 +84,28 @@ func (service *UserService) GetUsers() ([]userDtos.UserDtoForManager, error) {
 		return dtos, err
 	}
 	return dtos, nil
+}
+func (service *UserService) UpdateUser(userDto *userDtos.UserDtoUpdateForManager) error {
+	err := service.UserExists(userDto.ID)
+	if err != nil {
+		return err
+	}
+	return service.Repo.UpdateUser(userDto.ToUser())
+}
+func (service *UserService) DeleteUser(id string) error {
+	err := service.UserExists(id)
+	if err != nil {
+		return err
+	}
+	return service.Repo.DeleteUser(id)
+}
+func (service *UserService) UserExists(id string) error {
+	isExists, err := service.Repo.UserExists(id)
+	if err != nil {
+		return err
+	}
+	if !isExists {
+		return errors.UserNotFoundError{ErrorType: errors.ErrorType{Message: "User not found", Code: 400}}
+	}
+	return nil
 }

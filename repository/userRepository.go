@@ -65,3 +65,20 @@ func (r UserRepository) GetUsers() ([]models.User, error) {
 	}
 	return users, nil
 }
+
+func (r UserRepository) UpdateUser(user *models.User) error {
+	return r.DB.Save(user).Error
+}
+
+func (r UserRepository) DeleteUser(id string) error {
+	return r.DB.Delete(&models.User{}, id).Error
+}
+
+func (r UserRepository) UserExists(id string) (bool, error) {
+	var user models.User
+	result := r.DB.Exec(`SELECT id FROM users WHERE id = ?`, id).Scan(&user)
+	if result.Error != nil {
+		return false, result.Error
+	}
+	return true, nil
+}
