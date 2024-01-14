@@ -13,6 +13,10 @@ type ApartmentDtoForCreate struct {
 	OwnerID             string `json:"ownerId" gorm:"type:varchar(50);not null"`
 	HirerID             string `json:"hirerId" gorm:"type:varchar(50)"`
 }
+type ApartmentDtoForUpdateHirer struct {
+	ID      string `json:"id"`
+	HirerID string `json:"hirerId" gorm:"type:varchar(50)"`
+}
 
 func (a ApartmentDtoForCreate) ToApartment() *models.Apartment {
 	var apartment models.Apartment

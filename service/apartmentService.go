@@ -12,3 +12,7 @@ type ApartmentService struct {
 func (service ApartmentService) CreateApartment(dto *apartmentDtos.ApartmentDtoForCreate) error {
 	return service.Repo.CreateApartment(dto.ToApartment())
 }
+
+func (service ApartmentService) UpdateApartmentHirer(dto *apartmentDtos.ApartmentDtoForUpdateHirer) error {
+	return service.Repo.UpdateApartmentHirer(dto.ID, dto.HirerID)
+}

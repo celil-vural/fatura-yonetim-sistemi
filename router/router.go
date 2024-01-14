@@ -13,4 +13,5 @@ func SetupRoutes(app *fiber.App) {
 	manager := v1.Group("/manager", middleware.AddJwtMiddleware(), middleware.IsManager())
 	manager.Post("/addUser", handler.Register)
 	manager.Post("/addApartment", handler.CreateApartment)
+	manager.Put("/updateApartmentHirer", handler.UpdateApartmentHirer)
 }
