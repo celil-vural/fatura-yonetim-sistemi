@@ -14,4 +14,5 @@ func SetupRoutes(app *fiber.App) {
 	manager.Post("/addUser", handler.Register)
 	manager.Post("/addApartment", handler.CreateApartment)
 	manager.Put("/updateApartmentHirer", handler.UpdateApartmentHirer)
+	manager.Get("/getUsers", handler.GetUsers)
 }

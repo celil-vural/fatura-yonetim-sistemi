@@ -56,3 +56,12 @@ func (r UserRepository) FindUserForIsManager(id string) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+func (r UserRepository) GetUsers() ([]models.User, error) {
+	var users []models.User
+	result := r.DB.Preload("Apartments").Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return users, nil
+}

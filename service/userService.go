@@ -64,3 +64,16 @@ func (service *UserService) UserIsManager(id string) (bool, error) {
 	}
 	return false, nil
 }
+func (service *UserService) GetUsers() ([]userDtos.UserDtoForManager, error) {
+	users, err := service.Repo.GetUsers()
+	var dtos []userDtos.UserDtoForManager
+	for _, user := range users {
+		var userDto userDtos.UserDtoForManager
+		userDto.FromUser(&user)
+		dtos = append(dtos, userDto)
+	}
+	if err != nil {
+		return dtos, err
+	}
+	return dtos, nil
+}

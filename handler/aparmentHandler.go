@@ -50,3 +50,17 @@ func UpdateApartmentHirer(c *fiber.Ctx) error {
 	)
 
 }
+func GetUsers(c *fiber.Ctx) error {
+	var userService = service.UserService{Repo: repository.UserRepository{DB: database.Database.Db}}
+	users, err := userService.GetUsers()
+	if err != nil {
+		return err
+	}
+	return c.Status(200).JSON(
+		entity.GlobalResponse{
+			Data:        users,
+			Success:     true,
+			ErrorDetail: entity.ErrorResponse{},
+		},
+	)
+}
