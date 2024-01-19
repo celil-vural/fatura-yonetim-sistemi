@@ -22,6 +22,20 @@ type RegisterDto struct {
 type UserDtoForSessionControl struct {
 	SessionActive bool `json:"session_active"`
 }
+type UserDtoForManagerGet struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Phone   string `json:"phone"`
+}
+
+func (d UserDtoForManagerGet) FromUser(user *models.User) {
+	d.ID = user.ID
+	d.Name = user.Name
+	d.Surname = user.Surname
+	d.Phone = user.Phone
+}
+
 type UserDtoForManager struct {
 	ID               string                                    `json:"id"`
 	Name             string                                    `json:"name"`

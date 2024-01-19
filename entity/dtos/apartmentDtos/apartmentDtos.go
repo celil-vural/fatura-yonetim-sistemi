@@ -1,6 +1,7 @@
 package apartmentDtos
 
 import (
+	"fatura-yonetim-sistemi/entity/dtos/userDtos"
 	"fatura-yonetim-sistemi/entity/models"
 	"gorm.io/gorm"
 	"time"
@@ -22,19 +23,19 @@ type ApartmentDtoForUpdateHirer struct {
 	HirerID string `json:"hirerId" gorm:"type:varchar(50)"`
 }
 type ApartmentDtoForManagerGet struct {
-	ID                  uint           `json:"id"`
-	ApartmentNumber     string         `json:"apartmentNumber"`
-	ApartmentType       string         `json:"apartmentType"`
-	ApartmentFloor      string         `json:"apartmentFloor"`
-	ApartmentBlock      rune           `json:"apartmentBlock"`
-	ApartmentStatus     bool           `json:"apartmentStatus"`
-	ApartmentRoomsCount int            `json:"apartmentRoomsCount"`
-	ApartmentArea       int            `json:"apartmentArea"`
-	CreatedAt           time.Time      `json:"created_at"`
-	UpdatedAt           time.Time      `json:"updated_at"`
-	DeletedAt           gorm.DeletedAt `json:"deleted_at"`
-	OwnerID             string         `json:"ownerId" `
-	HirerID             string         `json:"hirerId"`
+	ID                  uint                          `json:"id"`
+	ApartmentNumber     string                        `json:"apartmentNumber"`
+	ApartmentType       string                        `json:"apartmentType"`
+	ApartmentFloor      string                        `json:"apartmentFloor"`
+	ApartmentBlock      rune                          `json:"apartmentBlock"`
+	ApartmentStatus     bool                          `json:"apartmentStatus"`
+	ApartmentRoomsCount int                           `json:"apartmentRoomsCount"`
+	ApartmentArea       int                           `json:"apartmentArea"`
+	CreatedAt           time.Time                     `json:"created_at"`
+	UpdatedAt           time.Time                     `json:"updated_at"`
+	DeletedAt           gorm.DeletedAt                `json:"deleted_at"`
+	Owner               userDtos.UserDtoForManagerGet `json:"owner"`
+	Hirer               userDtos.UserDtoForManagerGet `json:"hirer"`
 }
 
 func (a ApartmentDtoForManagerGet) FromApartment(apartment *models.Apartment) {
@@ -49,8 +50,8 @@ func (a ApartmentDtoForManagerGet) FromApartment(apartment *models.Apartment) {
 	a.CreatedAt = apartment.CreatedAt
 	a.UpdatedAt = apartment.UpdatedAt
 	a.DeletedAt = apartment.DeletedAt
-	a.OwnerID = apartment.OwnerID
-	a.HirerID = apartment.HirerID
+	a.Owner.FromUser(apartment.Owner)
+	a.Hirer.FromUser(apartment.Hirer)
 }
 func (a ApartmentDtoForCreate) ToApartment() *models.Apartment {
 	var apartment models.Apartment

@@ -16,3 +16,17 @@ func (service ApartmentService) CreateApartment(dto *apartmentDtos.ApartmentDtoF
 func (service ApartmentService) UpdateApartmentHirer(dto *apartmentDtos.ApartmentDtoForUpdateHirer) error {
 	return service.Repo.UpdateApartmentHirer(dto.ID, dto.HirerID)
 }
+
+func (service ApartmentService) GetApartments() ([]apartmentDtos.ApartmentDtoForManagerGet, error) {
+	apartments, err := service.Repo.GetApartments()
+	if err != nil {
+		return nil, err
+	}
+	var dtos []apartmentDtos.ApartmentDtoForManagerGet
+	for _, apartment := range apartments {
+		var dto apartmentDtos.ApartmentDtoForManagerGet
+		dto.FromApartment(&apartment)
+		dtos = append(dtos, dto)
+	}
+	return dtos, nil
+}
